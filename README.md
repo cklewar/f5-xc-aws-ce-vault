@@ -2,16 +2,34 @@
 
 Terraform to create F5XC AWS Cloud CE with Vault
 
+## Prerequisites
+
+In order to run this use case below is needed:
+
+- Terraform installed locally
+- Vault installed locally --> Linux installation instructions: https://www.hashicorp.com/official-packaging-guide 
+- An AWS account and AWS Access Credentials
+
 ## Usage
 
+- Start the vault server
 - Clone this repo with `git clone --recurse-submodules https://github.com/cklewar/f5-xc-aws-ce-vault`
 - Enter repository directory with `cd f5-xc-aws-cloud-ce-vault`
-- Obtain F5XC API certificate file from Console and save it to `cert` directory
-- Pick and choose from below examples and add mandatory input data and copy data into file `main.py.example`.
-- Rename file __main.tf.example__ to __main.tf__ with `rename main.py.example main.py`
-- Change backend settings in `versions.tf` file to fit your environment needs
-- Initialize with `terraform init`
-- Apply with `terraform apply -auto-approve` or destroy with `terraform destroy -auto-approve`
+- Obtain F5XC API certificate file from Console and save it to a directory where it can be read later on by F5 XC provider
+- Obtain F5XC API token file from Console and provide it as Terraform input variable for later usage
+- Export Vault server environment variables
+  * export VAULT_TOKEN=<vault_server_token>
+  * export VAULT_ADDR="<vault_server_address:port>"
+- Enter `vault` directory
+  * Change backend settings in `versions.tf` file to fit your environment needs. This example uses Terraform Cloud as backend system
+  * Initialize with `terraform init`
+  * Apply with `terraform apply -auto-approve` or destroy with `terraform destroy -auto-approve`
+- Enter `ce` directory
+  * Pick and choose from below examples and add mandatory input data and copy data into file `main.tf.example` in `ce` folder
+  * Rename file __main.tf.example__ to __main.tf__ with `rename main.tf.example main.tf`
+  * Change backend settings in `versions.tf` file to fit your environment needs. This example uses Terraform Cloud as backend system 
+  * Initialize with `terraform init`
+  * Apply with `terraform apply -auto-approve` or destroy with `terraform destroy -auto-approve`
 
 ## AWS Cloud CE Vault module usage example
 
@@ -28,10 +46,6 @@ variable "project_suffix" {
   default     = "01"
 }
 
-variable "name_admin" {
-  type    = string
-  default = "dynamic-aws-creds-vault-admin"
-}
 
 variable "name_operator" {
   type    = string
@@ -83,6 +97,16 @@ variable "ssh_public_key_file" {
   type = string
 }
 
+variable "name" {
+  type    = string
+  default = "dynamic-aws-creds-operator"
+}
+
+variable "ttl" {
+  type    = string
+  default = "1"
+}
+
 locals {
   aws_availability_zone = format("%s%s", var.f5xc_aws_region, var.f5xc_aws_availability_zone)
   custom_tags           = {
@@ -90,6 +114,16 @@ locals {
     f5xc-tenant  = var.f5xc_tenant
     f5xc-feature = "${var.project_prefix}-cloud-ce-aws-vpc-site"
   }
+}
+
+data "tfe_outputs" "vault" {
+  organization = "cklewar"
+  workspace    = "aws-vault-module"
+}
+
+data "vault_aws_access_credentials" "creds" {
+  backend = data.tfe_outputs.vault.values.backend
+  role    = data.tfe_outputs.vault.values.role
 }
 
 provider "volterra" {
@@ -105,45 +139,8 @@ provider "aws" {
   secret_key = data.vault_aws_access_credentials.creds.secret_key
 }
 
-provider "vault" {
-  address = "192.168.2.75:8200"
-  alias   = "default"
-}
-
-data "vault_aws_access_credentials" "creds" {
-  role    = vault_aws_secret_backend_role.admin.name
-  backend = vault_aws_secret_backend.aws.path
-}
-
-resource "vault_aws_secret_backend" "aws" {
-  path                      = "${var.name_admin}-path"
-  max_lease_ttl_seconds     = "240"
-  default_lease_ttl_seconds = "120"
-  provider                  = vault.default
-}
-
-resource "vault_aws_secret_backend_role" "admin" {
-  name            = "${var.name_admin}-role"
-  backend         = vault_aws_secret_backend.aws.path
-  credential_type = "iam_user"
-  policy_document = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "iam:*", "ec2:*"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-EOF
-}
-
 module "f5xc_aws_cloud_ce_single_node_single_nic_new_vpc_new_subnet" {
-  source                = "./modules/f5xc/ce/aws"
+  source                = "../modules/f5xc/ce/aws"
   owner_tag             = var.owner
   is_sensitive          = false
   has_public_ip         = true

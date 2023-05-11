@@ -429,9 +429,9 @@ zsdoc/data
 
 ck.tfvars.json
 ck_gcp_creds.json
-ck.tf
+ce/ck.tf
 *.p12
 
 .idea
 .terraform
-.terraform.lock.hcl
+ce/.terraform.lock.hcl
