@@ -18,7 +18,7 @@ jobs:
         with:
           repository: cklewar/f5-xc-test
           path: f5-xc-cert
-          token:  ${{ secrets.GH_PAT }}
+          token: ${{ secrets.GH_PAT }}
       - run: echo "The  ${{ github.release }} release has been cloned to the runner."
       - name: List files in the release
         run: |
@@ -29,7 +29,10 @@ jobs:
       - name: Setup environment
         id: setup_env
         run: |
+          cd ce 
+          terraform plan -no-color
           cp main.tf.example main.tf
+          cd ..
       - name: Setup Terraform
         id: setup_tf
         uses: hashicorp/setup-terraform@v2
@@ -37,7 +40,13 @@ jobs:
           terraform_wrapper: false
       - name: Terraform fmt
         id: fmt
-        run: terraform fmt -check
+        run: |
+          cd vault 
+          terraform fmt -check
+          cd ..
+          cd ce 
+          terraform fmt -check
+          cd ..
         continue-on-error: true
       - name: Terraform Init
         id: init
@@ -46,10 +55,16 @@ jobs:
         run: terraform init -upgrade
       - name: Terraform Validate
         id: validate
-        run: terraform validate -no-color
+        run: |
+          cd vault 
+          terraform validate -no-color
+          cd ..
+          cd ce 
+          terraform validate -no-color
+          cd ..
   aws-cloud-ce-vault-module-plan:
     runs-on: ubuntu-latest
-    needs: [aws-cloud-ce-vault-module-validate]
+    needs: [ aws-cloud-ce-vault-module-validate ]
     steps:
       - run: echo "The job was automatically triggered by a ${{github.event_name}} event."
       - run: echo "This job is now running on a ${{ runner.os }} server hosted by GitHub."
@@ -63,7 +78,7 @@ jobs:
         with:
           repository: cklewar/f5-xc-test
           path: f5-xc-cert
-          token:  ${{ secrets.GH_PAT }}
+          token: ${{ secrets.GH_PAT }}
       - run: echo "The  ${{ github.release }} release has been cloned to the runner."
       - name: List files in the release
         run: |
@@ -74,7 +89,9 @@ jobs:
       - name: Setup environment
         id: setup_env
         run: |
-           cp main.tf.example main.tf
+          cd ce 
+          cp main.tf.example main.tf
+          cd ..
       - name: Setup Terraform
         id: setup_tf
         uses: hashicorp/setup-terraform@v2
@@ -85,7 +102,13 @@ jobs:
         id: init
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
-        run:  terraform init -upgrade
+        run: |
+          cd vault 
+          terraform init -upgrade
+          cd ..
+          cd ce 
+          terraform init -upgrade
+          cd ..
       - name: Terraform Plan
         id: plan
         env:
@@ -100,16 +123,22 @@ jobs:
           TF_VAR_f5xc_api_credential_password: ${{ secrets.F5XC_API_CREDENTIAL_PASSWORD }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: terraform plan -no-color
+        run: |
+          cd vault 
+          terraform plan -no-color
+          cd ..
+          cd ce 
+          terraform plan -no-color
+          cd ..
         continue-on-error: false
       - name: Cleanup environment
         id: cleanup_env
         run: |
-          rm main.tf
+          rm ce/main.tf
       - run: echo "This job's status is ${{ job.status }}."
   aws-cloud-ce-vault-module-apply:
     runs-on: ubuntu-latest
-    needs: [aws-cloud-ce-vault-module-plan]
+    needs: [ aws-cloud-ce-vault-module-plan ]
     steps:
       - run: echo "The job was automatically triggered by a ${{github.event_name}} event."
       - run: echo "This job is now running on a ${{ runner.os }} server hosted by GitHub."
@@ -123,7 +152,7 @@ jobs:
         with:
           repository: cklewar/f5-xc-test
           path: f5-xc-cert
-          token:  ${{ secrets.GH_PAT }}
+          token: ${{ secrets.GH_PAT }}
       - run: echo "The  ${{ github.release }} release has been cloned to the runner."
       - name: List files in the release
         run: |
@@ -134,7 +163,9 @@ jobs:
       - name: Setup environment
         id: setup_env
         run: |
+          cd ce 
           cp main.tf.example main.tf
+          cd ..
       - name: Setup Terraform
         id: setup_tf
         uses: hashicorp/setup-terraform@v2
@@ -145,7 +176,7 @@ jobs:
         id: init
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
-        run:  terraform init -upgrade
+        run: terraform init -upgrade
       - name: Terraform Apply
         id: apply
         env:
@@ -160,12 +191,18 @@ jobs:
           TF_VAR_f5xc_api_credential_password: ${{ secrets.F5XC_API_CREDENTIAL_PASSWORD }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: terraform apply -auto-approve -no-color
+        run: |
+          cd vault 
+          terraform apply -auto-approve -no-color
+          cd ..
+          cd ce 
+          terraform apply -auto-approve -no-color
+          cd ..
         continue-on-error: false
       - name: Cleanup environment
         id: cleanup_env
         run: |
-          rm main.tf
+          rm ce/main.tf
       - run: echo "This job's status is ${{ job.status }}."
   aws-cloud-ce-vault-module-reapply:
     runs-on: ubuntu-latest
@@ -194,7 +231,9 @@ jobs:
       - name: Setup environment
         id: setup_env
         run: |
+          cd ce
           cp main.tf.example main.tf
+          cd ..
       - name: Setup Terraform
         id: setup_tf
         uses: hashicorp/setup-terraform@v2
@@ -209,27 +248,27 @@ jobs:
       - name: Terraform Apply
         id: reapply
         env:
-            GH_PAT: ${{ secrets.GH_PAT }}
-            TF_TOKEN_APP_TERRAFORM_IO: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
-            VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
-            TF_VAR_f5xc_api_url: ${{ secrets.F5XC_API_URL }}
-            TF_VAR_f5xc_api_p12_file_nfv: ${{ secrets.F5XC_API_P12_FILE_NFV }}
-            TF_VAR_f5xc_api_p12_file: ${{ secrets.F5XC_API_P12_FILE }}
-            TF_VAR_f5xc_tenant: ${{ secrets.F5XC_TENANT }}
-            TF_VAR_f5xc_api_token: ${{ secrets.F5XC_API_TOKEN }}
-            TF_VAR_f5xc_api_credential_password: ${{ secrets.F5XC_API_CREDENTIAL_PASSWORD }}
-            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          GH_PAT: ${{ secrets.GH_PAT }}
+          TF_TOKEN_APP_TERRAFORM_IO: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
+          VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
+          TF_VAR_f5xc_api_url: ${{ secrets.F5XC_API_URL }}
+          TF_VAR_f5xc_api_p12_file_nfv: ${{ secrets.F5XC_API_P12_FILE_NFV }}
+          TF_VAR_f5xc_api_p12_file: ${{ secrets.F5XC_API_P12_FILE }}
+          TF_VAR_f5xc_tenant: ${{ secrets.F5XC_TENANT }}
+          TF_VAR_f5xc_api_token: ${{ secrets.F5XC_API_TOKEN }}
+          TF_VAR_f5xc_api_credential_password: ${{ secrets.F5XC_API_CREDENTIAL_PASSWORD }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: terraform apply -auto-approve -no-color
         continue-on-error: false
       - name: Cleanup environment
         id: cleanup_env
         run: |
-          rm main.tf
+          rm ce/main.tf
       - run: echo "This job's status is ${{ job.status }}."
   aws-cloud-ce-vault-module-destroy:
     runs-on: ubuntu-latest
-    needs: [aws-cloud-ce-vault-module-reapply]
+    needs: [ aws-cloud-ce-vault-module-reapply ]
     steps:
       - run: echo "The job was automatically triggered by a ${{github.event_name}} event."
       - run: echo "This job is now running on a ${{ runner.os }} server hosted by GitHub."
@@ -243,7 +282,7 @@ jobs:
         with:
           repository: cklewar/f5-xc-test
           path: f5-xc-cert
-          token:  ${{ secrets.GH_PAT }}
+          token: ${{ secrets.GH_PAT }}
       - run: echo "The  ${{ github.release }} release has been cloned to the runner."
       - name: List files in the release
         run: |
@@ -254,7 +293,9 @@ jobs:
       - name: Setup environment
         id: setup_env
         run: |
+          cd ce
           cp main.tf.example main.tf
+          cd ..
       - name: Setup Terraform
         id: setup_tf
         uses: hashicorp/setup-terraform@v2
@@ -265,7 +306,7 @@ jobs:
         id: init
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
-        run:  terraform init -upgrade
+        run: terraform init -upgrade
       - name: Terraform Destroy
         id: destroy
         env:
@@ -280,10 +321,16 @@ jobs:
           TF_VAR_f5xc_api_credential_password: ${{ secrets.F5XC_API_CREDENTIAL_PASSWORD }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: terraform destroy -auto-approve -no-color
+        run: |
+          cd ce 
+          terraform destroy -auto-approve -no-color
+          cd ..
+          cd vault 
+          terraform destroy -auto-approve -no-color
+          cd ..
         continue-on-error: false
       - name: Cleanup environment
         id: cleanup_env
         run: |
-          rm main.tf
+          rm cd/main.tf
       - run: echo "This job's status is ${{ job.status }}."
