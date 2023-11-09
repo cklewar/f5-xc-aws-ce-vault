@@ -46,7 +46,13 @@ jobs:
         run: terraform init -upgrade
       - name: Terraform Validate
         id: validate
-        run: terraform validate -no-color
+        run: |
+          cd vault
+          terraform validate -no-color
+          cd ..
+          cd ce
+          cp main.tf.example main.tf
+          terraform validate -no-color
   aws-cloud-ce-vault-module-plan:
     runs-on: ubuntu-latest
     needs: [aws-cloud-ce-vault-module-validate]
@@ -100,7 +106,13 @@ jobs:
           TF_VAR_f5xc_api_credential_password: ${{ secrets.F5XC_API_CREDENTIAL_PASSWORD }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: terraform plan -no-color
+        run: |
+          cd vault
+          terraform plan -no-color
+          cd ..
+          cd ce
+          cp main.tf.example main.tf
+          terraform plan -no-color
         continue-on-error: false
       - name: Cleanup environment
         id: cleanup_env
