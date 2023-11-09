@@ -199,9 +199,9 @@ jobs:
         run: |
           cd ${{ github.workspace }}/ec2
           terraform apply -auto-approve -no-color
-          echo "VAULT_ADDR=http://$(terraform output -json | jq -r '.ssh_host.value'):8200" >> $GITHUB_ENV
-          echo "VAULT_TOKEN=${{ secrets.HASHICORP_VAULT_TOKEN }} >> $GITHUB_ENV
-          echo ${{ env.VAULT_ADDR }}
+          HOST_ADDR=$(terraform output -json | jq -r '.ssh_host.value')
+          echo "VAULT_ADDR=http://$HOST_ADDR:8200" >> $GITHUB_ENV
+          echo "VAULT_TOKEN=${{ '{{' }} secrets.HASHICORP_VAULT_TOKEN {{ '}}' }} >> $GITHUB_ENV
         continue-on-error: false
       - name: Terraform Apply Vault
         id: apply_vault
