@@ -10,10 +10,6 @@ variable "aws_secret_access_key" {
   type = string
 }
 
-variable "vault_address" {
-  type = string
-}
-
 provider "vault" {}
   #alias   = "default"
   # address = "http://192.168.2.75:8200"
