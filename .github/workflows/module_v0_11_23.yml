@@ -113,6 +113,8 @@ jobs:
           TF_VAR_f5xc_api_credential_password: ${{ secrets.F5XC_API_CREDENTIAL_PASSWORD }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          TF_VAR_ssh_private_key_file: ${{ secrets.SSH_PRIVATE_KEY_FILE }}
+          TF_VAR_ssh_public_key_file: ${{ secrets.SSH_PUBLIC_KEY_FILE }}
           TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
@@ -186,6 +188,8 @@ jobs:
           TF_VAR_f5xc_api_credential_password: ${{ secrets.F5XC_API_CREDENTIAL_PASSWORD }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          TF_VAR_ssh_private_key_file: ${{ secrets.SSH_PRIVATE_KEY_FILE }}
+          TF_VAR_ssh_public_key_file: ${{ secrets.SSH_PUBLIC_KEY_FILE }}
           TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
@@ -261,6 +265,8 @@ jobs:
             TF_VAR_f5xc_api_credential_password: ${{ secrets.F5XC_API_CREDENTIAL_PASSWORD }}
             AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            TF_VAR_ssh_private_key_file: ${{ secrets.SSH_PRIVATE_KEY_FILE }}
+            TF_VAR_ssh_public_key_file: ${{ secrets.SSH_PUBLIC_KEY_FILE }}
             TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
@@ -336,6 +342,8 @@ jobs:
           TF_VAR_f5xc_api_credential_password: ${{ secrets.F5XC_API_CREDENTIAL_PASSWORD }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          TF_VAR_ssh_private_key_file: ${{ secrets.SSH_PRIVATE_KEY_FILE }}
+          TF_VAR_ssh_public_key_file: ${{ secrets.SSH_PUBLIC_KEY_FILE }}
           TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
