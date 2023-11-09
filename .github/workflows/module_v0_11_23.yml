@@ -43,6 +43,7 @@ jobs:
           cd ${{ github.workspace }}/vault 
           terraform init -upgrade
           cd ${{ github.workspace }}/ce
+          cp main.tf.example main.tf
           terraform init -upgrade
       - name: Terraform Validate
         id: validate
@@ -90,6 +91,7 @@ jobs:
           cd ${{ github.workspace }}/vault 
           terraform init -upgrade
           cd ${{ github.workspace }}/ce
+          cp main.tf.example main.tf
           terraform init -upgrade
       - name: Terraform Plan
         id: plan
@@ -156,6 +158,7 @@ jobs:
           cd ${{ github.workspace }}/vault 
           terraform init -upgrade
           cd ${{ github.workspace }}/ce
+          cp main.tf.example main.tf
           terraform init -upgrade
       - name: Terraform Apply
         id: apply
@@ -222,6 +225,7 @@ jobs:
           cd ${{ github.workspace }}/vault 
           terraform init -upgrade
           cd ${{ github.workspace }}/ce
+          cp main.tf.example main.tf
           terraform init -upgrade
       - name: Terraform Apply
         id: reapply
@@ -288,6 +292,7 @@ jobs:
           cd ${{ github.workspace }}/vault 
           terraform init -upgrade
           cd ${{ github.workspace }}/ce
+          cp main.tf.example main.tf
           terraform init -upgrade
       - name: Terraform Destroy
         id: destroy
