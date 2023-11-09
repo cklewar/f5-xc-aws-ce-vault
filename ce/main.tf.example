@@ -21,10 +21,6 @@ variable "region" {
   default = "us-east-1"
 }
 
-variable "f5xc_api_p12_file" {
-  type = string
-}
-
 variable "f5xc_api_url" {
   type = string
 }
@@ -75,6 +71,10 @@ variable "ttl" {
   default = "1"
 }
 
+variable "f5xc_api_p12_file_absolute" {
+  type = string
+}
+
 locals {
   aws_availability_zone = format("%s%s", var.f5xc_aws_region, var.f5xc_aws_availability_zone)
   custom_tags           = {
@@ -95,7 +95,7 @@ data "vault_aws_access_credentials" "creds" {
 }
 
 provider "volterra" {
-  api_p12_file = var.f5xc_api_p12_file
+  api_p12_file = format("%s/%s", var.root_path, var.f5xc_api_p12_file_absolute)
   url          = var.f5xc_api_url
   alias        = "default"
   timeout      = "30s"
