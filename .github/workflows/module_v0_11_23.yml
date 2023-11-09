@@ -200,7 +200,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}/ec2
           terraform apply -auto-approve -no-color
-          echo "VAULT_ADDR=http://$(terraform output -json | jq -r '.ssh_host.value.ssh_host'):8200" >> $GITHUB_ENV
+          echo "VAULT_ADDR=http://$(terraform output -json | jq -r '.ssh_host.value.name'):8200" >> $GITHUB_ENV
           echo ${{ env.VAULT_ADDR }}
           cd ${{ github.workspace }}/vault
           terraform apply -auto-approve -no-color
@@ -282,7 +282,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}/ec2
           terraform apply -auto-approve -no-color
-          echo "VAULT_ADDR=http://$(terraform output -json | jq -r '.ssh_host.value.ssh_host'):8200" >> $GITHUB_ENV
+          echo "VAULT_ADDR=http://$(terraform output -json | jq -r '.ssh_host.value.name'):8200" >> $GITHUB_ENV
           echo ${{ env.VAULT_ADDR }}
           cd ${{ github.workspace }}/vault
           terraform apply -auto-approve -no-color
@@ -364,7 +364,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}/ec2
           terraform destroy -auto-approve -no-color
-          echo "VAULT_ADDR=http://$(terraform output -json | jq -r '.ssh_host.value.ssh_host'):8200" >> $GITHUB_ENV
+          echo "VAULT_ADDR=http://$(terraform output -json | jq -r '.ssh_host.value.name'):8200" >> $GITHUB_ENV
           echo ${{ env.VAULT_ADDR }}
           cd ${{ github.workspace }}/vault
           terraform destroy -auto-approve -no-color
