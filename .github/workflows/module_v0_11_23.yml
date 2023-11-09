@@ -108,6 +108,7 @@ jobs:
           TF_VAR_f5xc_api_url: ${{ secrets.F5XC_API_URL }}
           TF_VAR_f5xc_api_p12_file_nfv: ${{ secrets.F5XC_API_P12_FILE_NFV }}
           TF_VAR_f5xc_api_p12_file: ${{ secrets.F5XC_API_P12_FILE }}
+          TF_VAR_f5xc_api_p12_file_absolute: ${{ secrets.F5XC_API_P12_FILE_ABSOLUTE }}
           TF_VAR_f5xc_tenant: ${{ secrets.F5XC_TENANT }}
           TF_VAR_f5xc_api_token: ${{ secrets.F5XC_API_TOKEN }}
           TF_VAR_f5xc_api_credential_password: ${{ secrets.F5XC_API_CREDENTIAL_PASSWORD }}
@@ -185,6 +186,7 @@ jobs:
           TF_VAR_f5xc_api_url: ${{ secrets.F5XC_API_URL }}
           TF_VAR_f5xc_api_p12_file_nfv: ${{ secrets.F5XC_API_P12_FILE_NFV }}
           TF_VAR_f5xc_api_p12_file: ${{ secrets.F5XC_API_P12_FILE }}
+          TF_VAR_f5xc_api_p12_file_absolute: ${{ secrets.F5XC_API_P12_FILE_ABSOLUTE }}
           TF_VAR_f5xc_tenant: ${{ secrets.F5XC_TENANT }}
           TF_VAR_f5xc_api_token: ${{ secrets.F5XC_API_TOKEN }}
           TF_VAR_f5xc_api_credential_password: ${{ secrets.F5XC_API_CREDENTIAL_PASSWORD }}
@@ -266,6 +268,7 @@ jobs:
             TF_VAR_f5xc_api_url: ${{ secrets.F5XC_API_URL }}
             TF_VAR_f5xc_api_p12_file_nfv: ${{ secrets.F5XC_API_P12_FILE_NFV }}
             TF_VAR_f5xc_api_p12_file: ${{ secrets.F5XC_API_P12_FILE }}
+            TF_VAR_f5xc_api_p12_file_absolute: ${{ secrets.F5XC_API_P12_FILE_ABSOLUTE }}
             TF_VAR_f5xc_tenant: ${{ secrets.F5XC_TENANT }}
             TF_VAR_f5xc_api_token: ${{ secrets.F5XC_API_TOKEN }}
             TF_VAR_f5xc_api_credential_password: ${{ secrets.F5XC_API_CREDENTIAL_PASSWORD }}
@@ -347,6 +350,7 @@ jobs:
           TF_VAR_f5xc_api_url: ${{ secrets.F5XC_API_URL }}
           TF_VAR_f5xc_api_p12_file_nfv: ${{ secrets.F5XC_API_P12_FILE_NFV }}
           TF_VAR_f5xc_api_p12_file: ${{ secrets.F5XC_API_P12_FILE }}
+          TF_VAR_f5xc_api_p12_file_absolute: ${{ secrets.F5XC_API_P12_FILE_ABSOLUTE }}
           TF_VAR_f5xc_tenant: ${{ secrets.F5XC_TENANT }}
           TF_VAR_f5xc_api_token: ${{ secrets.F5XC_API_TOKEN }}
           TF_VAR_f5xc_api_credential_password: ${{ secrets.F5XC_API_CREDENTIAL_PASSWORD }}
