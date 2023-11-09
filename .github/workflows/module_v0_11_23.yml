@@ -43,13 +43,12 @@ jobs:
       - name: Terraform Validate
         id: validate
         run: |
-          cd ${{ github.workspace }}/vault
+          cd vault
           terraform validate -no-color
-          cd /
-          cd ${{ github.workspace }}/ce
+          cd ..
+          cd ce
           cp main.tf.example main.tf
           terraform validate -no-color
-          cd /
   aws-cloud-ce-vault-module-plan:
     runs-on: ubuntu-latest
     needs: [aws-cloud-ce-vault-module-validate]
