@@ -26,10 +26,6 @@ jobs:
       - name: List files in the cert release
         run: |
           ls -la ${{ github.workspace }}/f5-xc-cert
-      - name: Setup environment
-        id: setup_env
-        run: |
-          cp main.tf.example main.tf
       - name: Setup Terraform
         id: setup_tf
         uses: hashicorp/setup-terraform@v2
@@ -78,10 +74,6 @@ jobs:
       - name: List files in the cert release
         run: |
           ls -la ${{ github.workspace }}/f5-xc-cert
-      - name: Setup environment
-        id: setup_env
-        run: |
-           cp main.tf.example main.tf
       - name: Setup Terraform
         id: setup_tf
         uses: hashicorp/setup-terraform@v2
@@ -144,10 +136,6 @@ jobs:
       - name: List files in the cert release
         run: |
           ls -la ${{ github.workspace }}/f5-xc-cert
-      - name: Setup environment
-        id: setup_env
-        run: |
-          cp main.tf.example main.tf
       - name: Setup Terraform
         id: setup_tf
         uses: hashicorp/setup-terraform@v2
@@ -211,10 +199,6 @@ jobs:
       - name: List files in the cert release
         run: |
           ls -la ${{ github.workspace }}/f5-xc-cert
-      - name: Setup environment
-        id: setup_env
-        run: |
-          cp main.tf.example main.tf
       - name: Setup Terraform
         id: setup_tf
         uses: hashicorp/setup-terraform@v2
@@ -278,10 +262,6 @@ jobs:
       - name: List files in the cert release
         run: |
           ls -la ${{ github.workspace }}/f5-xc-cert
-      - name: Setup environment
-        id: setup_env
-        run: |
-          cp main.tf.example main.tf
       - name: Setup Terraform
         id: setup_tf
         uses: hashicorp/setup-terraform@v2
