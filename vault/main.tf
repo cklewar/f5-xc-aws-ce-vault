@@ -10,10 +10,14 @@ variable "aws_secret_access_key" {
   type = string
 }
 
-provider "vault" {
-  alias   = "default"
-  address = "http://192.168.2.75:8200"
+variable "vault_address" {
+  type = string
 }
+
+provider "vault" {}
+  #alias   = "default"
+  # address = "http://192.168.2.75:8200"
+#}
 
 resource "vault_aws_secret_backend" "aws" {
   access_key                = var.aws_access_key_id
@@ -21,13 +25,13 @@ resource "vault_aws_secret_backend" "aws" {
   path                      = "${var.name_admin}-path"
   max_lease_ttl_seconds     = "240"
   default_lease_ttl_seconds = "120"
-  provider                  = vault.default
+  # provider                  = vault.default
 }
 
 resource "vault_aws_secret_backend_role" "admin" {
   name            = "${var.name_admin}-role"
   backend         = vault_aws_secret_backend.aws.path
-  provider        = vault.default
+  # provider        = vault.default
   credential_type = "iam_user"
   policy_document = <<EOF
 {
