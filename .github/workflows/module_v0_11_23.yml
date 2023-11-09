@@ -123,8 +123,6 @@ jobs:
         run: |
           cd ${{ github.workspace }}/ec2
           terraform plan -no-color
-          cd ${{ github.workspace }}/vault
-          terraform plan -no-color
           cd ${{ github.workspace }}/ce
           cp main.tf.example main.tf
           terraform plan -no-color
