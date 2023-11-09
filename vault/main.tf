@@ -10,16 +10,11 @@ variable "aws_secret_access_key" {
   type = string
 }
 
-variable "vault_address" {
-  type    = string
-  default = ""
-}
-
 provider "vault" {}
 
 /*provider "vault" {
   alias   = "default"
-  address = var.vault_address #http://192.168.2.75:8200"
+  address = #http://192.168.2.75:8200"
 }*/
 
 resource "vault_aws_secret_backend" "aws" {
