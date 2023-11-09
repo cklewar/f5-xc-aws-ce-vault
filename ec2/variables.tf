@@ -39,11 +39,15 @@ variable "template_input_dir_path" {
   default = ""
 }
 
-variable "ssh_private_key_file" {
+variable "ssh_private_key_file_absolute" {
   type = string
 }
 
-variable "ssh_public_key_file" {
+variable "root_path" {
+  type = string
+}
+
+variable "ssh_public_key_file_absolute" {
   type = string
 }
 

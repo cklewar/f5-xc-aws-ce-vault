@@ -100,8 +100,8 @@ module "vault" {
       destination = format("/tmp/%s", var.aws_ec2_vault_instance_script_file_name)
     }
   ]
-  ssh_private_key          = file(var.ssh_private_key_file)
-  ssh_public_key           = file(var.ssh_public_key_file)
+  ssh_private_key          = file(format("%s/%s", var.root_path, var.ssh_private_key_file_absolute))
+  ssh_public_key           = file(format("%s/%s", var.root_path, var.ssh_public_key_file_absolute))
   template_input_dir_path  = local.template_input_dir_path
   template_output_dir_path = local.template_output_dir_path
   providers                = {
