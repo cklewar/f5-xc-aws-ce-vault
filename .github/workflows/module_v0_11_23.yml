@@ -42,7 +42,6 @@ jobs:
         run: |
           cd ${{ github.workspace }}/vault 
           terraform init -upgrade
-          cd /
           cd ${{ github.workspace }}/ce
           terraform init -upgrade
       - name: Terraform Validate
@@ -50,7 +49,6 @@ jobs:
         run: |
           cd ${{ github.workspace }}/vault
           terraform validate -no-color
-          cd /
           cd ${{ github.workspace }}/ce
           cp main.tf.example main.tf
           terraform validate -no-color
@@ -91,7 +89,6 @@ jobs:
         run: |
           cd ${{ github.workspace }}/vault 
           terraform init -upgrade
-          cd /
           cd ${{ github.workspace }}/ce
           terraform init -upgrade
       - name: Terraform Plan
@@ -111,7 +108,6 @@ jobs:
         run: |
           cd ${{ github.workspace }}/vault
           terraform plan -no-color
-          cd /
           cd ${{ github.workspace }}/ce
           cp main.tf.example main.tf
           terraform plan -no-color
@@ -159,7 +155,6 @@ jobs:
         run: |
           cd ${{ github.workspace }}/vault 
           terraform init -upgrade
-          cd /
           cd ${{ github.workspace }}/ce
           terraform init -upgrade
       - name: Terraform Apply
@@ -179,7 +174,6 @@ jobs:
         run: |
           cd ${{ github.workspace }}/vault
           terraform apply -auto-approve -no-color
-          cd /
           cd ${{ github.workspace }}/ce
           cp main.tf.example main.tf
           terraform apply -auto-approve -no-color
@@ -227,7 +221,6 @@ jobs:
         run: |
           cd ${{ github.workspace }}/vault 
           terraform init -upgrade
-          cd /
           cd ${{ github.workspace }}/ce
           terraform init -upgrade
       - name: Terraform Apply
@@ -247,7 +240,6 @@ jobs:
         run: |
           cd ${{ github.workspace }}/vault
           terraform apply -auto-approve -no-color
-          cd /
           cd ${{ github.workspace }}/ce
           cp main.tf.example main.tf
           terraform apply -auto-approve -no-color
@@ -295,7 +287,6 @@ jobs:
         run: |
           cd ${{ github.workspace }}/vault 
           terraform init -upgrade
-          cd /
           cd ${{ github.workspace }}/ce
           terraform init -upgrade
       - name: Terraform Destroy
@@ -315,7 +306,6 @@ jobs:
         run: |
           cd ${{ github.workspace }}/vault
           terraform destroy -auto-approve -no-color
-          cd /
           cd ${{ github.workspace }}/ce
           cp main.tf.example main.tf
           terraform destroy -auto-approve -no-color
