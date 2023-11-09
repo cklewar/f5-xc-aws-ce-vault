@@ -17,7 +17,7 @@ variable "owner_tag" {
   type = string
 }
 
-variable "aws_vpc_client_cidr_block" {
+variable "aws_vpc_vault_cidr_block" {
   type = string
 }
 
