@@ -16,11 +16,6 @@ variable "name_operator" {
   default = "dynamic-aws-creds-operator"
 }
 
-variable "region" {
-  type    = string
-  default = "us-east-1"
-}
-
 variable "f5xc_api_url" {
   type = string
 }
