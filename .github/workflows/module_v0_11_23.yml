@@ -202,11 +202,11 @@ jobs:
           terraform apply -auto-approve -no-color
           echo "VAULT_ADDR=http://$(terraform output -json | jq -r '.ssh_host.value'):8200" >> $GITHUB_ENV
           echo ${{ env.VAULT_ADDR }}
-          cd ${{ github.workspace }}/vault
-          terraform apply -auto-approve -no-color
-          cd ${{ github.workspace }}/ce
-          cp main.tf.example main.tf
-          terraform apply -auto-approve -no-color
+          # cd ${{ github.workspace }}/vault
+          # terraform apply -auto-approve -no-color
+          # cd ${{ github.workspace }}/ce
+          # cp main.tf.example main.tf
+          # terraform apply -auto-approve -no-color
         continue-on-error: false
       - name: Cleanup environment
         id: cleanup_env
