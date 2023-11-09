@@ -14,11 +14,6 @@ provider "vault" {
   alias   = "default"
 }
 
-/*provider "vault" {
-  alias   = "default"
-  address = #http://192.168.2.75:8200"
-}*/
-
 resource "vault_aws_secret_backend" "aws" {
   access_key                = var.aws_access_key_id
   secret_key                = var.aws_secret_access_key

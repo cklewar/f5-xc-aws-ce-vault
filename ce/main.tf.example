@@ -10,7 +10,6 @@ variable "project_suffix" {
   default     = "01"
 }
 
-
 variable "name_operator" {
   type    = string
   default = "dynamic-aws-creds-operator"
@@ -59,11 +58,6 @@ variable "ssh_public_key_file_absolute" {
 variable "name" {
   type    = string
   default = "dynamic-aws-creds-operator"
-}
-
-variable "ttl" {
-  type    = string
-  default = "1"
 }
 
 variable "f5xc_api_p12_file_absolute" {
