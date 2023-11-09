@@ -88,7 +88,7 @@ module "vault" {
     {
       create_eip      = true
       private_ips     = [var.aws_ec2_vault_instance_public_ip]
-      subnet_id       = module.vault_subnets.aws_subnets[0]["id"]
+      subnet_id       = module.vault_subnets.aws_subnets[format("%s-%s-public", var.project_prefix, var.aws_vpc_client_name)]["id"]
       custom_tags     = local.custom_tags
       security_groups = [module.aws_security_group_vault_instance_public.aws_security_group["id"]]
     }
