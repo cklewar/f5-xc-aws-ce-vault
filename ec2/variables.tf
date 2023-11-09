@@ -75,3 +75,7 @@ variable "aws_ec2_vault_instance_script_template_file_name" {
 variable "aws_ec2_vault_instance_public_ip" {
   type = string
 }
+
+variable "hashicorp_vault_token" {
+  type = string
+}

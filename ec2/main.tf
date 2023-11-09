@@ -82,7 +82,9 @@ module "vault" {
       format("chmod +x /tmp/%s", format("%s", var.aws_ec2_vault_instance_script_file_name)),
       format("sudo /tmp/%s", format("%s", var.aws_ec2_vault_instance_script_file_name))
     ]
-    template_data = {}
+    template_data = {
+      VAULT_TOKEN = var.hashicorp_vault_token
+    }
   }
   aws_ec2_network_interfaces = [
     {
