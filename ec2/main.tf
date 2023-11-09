@@ -9,7 +9,7 @@ module "vault_vpc" {
   aws_region         = var.aws_region
   aws_az_name        = format("%s%s", var.aws_region, var.aws_zone)
   aws_vpc_name       = format("%s-%s", var.project_prefix, var.aws_vpc_client_name)
-  aws_vpc_cidr_block = var.aws_vpc_client_cidr_block
+  aws_vpc_cidr_block = var.aws_vpc_vault_cidr_block
   create_igw         = true
   custom_tags        = local.custom_tags
   providers          = {
