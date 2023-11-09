@@ -118,6 +118,7 @@ jobs:
           TF_VAR_ssh_private_key_file_absolute: ${{ secrets.SSH_PRIVATE_KEY_FILE_ABSOLUTE }}
           TF_VAR_ssh_public_key_file: ${{ secrets.SSH_PUBLIC_KEY_FILE }}
           TF_VAR_ssh_public_key_file_absolute: ${{ secrets.SSH_PUBLIC_KEY_FILE_ABSOLUTE }}
+          TF_VAR_hashicorp_vault_token: ${{ secrets.HASHICORP_VAULT_TOKEN }}
           TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           TF_VAR_root_path: ${{ github.workspace }}
@@ -174,7 +175,7 @@ jobs:
           cd ${{ github.workspace }}/ce
           cp main.tf.example main.tf
           terraform init -upgrade
-      - name: Terraform Apply
+      - name: Terraform Apply EC2
         id: apply
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
@@ -193,20 +194,67 @@ jobs:
           TF_VAR_ssh_private_key_file_absolute: ${{ secrets.SSH_PRIVATE_KEY_FILE_ABSOLUTE }}
           TF_VAR_ssh_public_key_file: ${{ secrets.SSH_PUBLIC_KEY_FILE }}
           TF_VAR_ssh_public_key_file_absolute: ${{ secrets.SSH_PUBLIC_KEY_FILE_ABSOLUTE }}
-          TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          TF_VAR_hashicorp_vault_token: ${{ secrets.HASHICORP_VAULT_TOKEN }}
           TF_VAR_root_path: ${{ github.workspace }}
-          TFE_TOKEN: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
         run: |
           cd ${{ github.workspace }}/ec2
           terraform apply -auto-approve -no-color
           echo "VAULT_ADDR=http://$(terraform output -json | jq -r '.ssh_host.value'):8200" >> $GITHUB_ENV
+          echo "VAULT_TOKEN=${{ secrets.HASHICORP_VAULT_TOKEN }} >> $GITHUB_ENV
           echo ${{ env.VAULT_ADDR }}
-          # cd ${{ github.workspace }}/vault
-          # terraform apply -auto-approve -no-color
-          # cd ${{ github.workspace }}/ce
-          # cp main.tf.example main.tf
-          # terraform apply -auto-approve -no-color
+        continue-on-error: false
+      - name: Terraform Apply Vault
+        id: apply
+        env:
+            GH_PAT: ${{ secrets.GH_PAT }}
+            TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_app_terraform_io }}
+            VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
+            TF_VAR_f5xc_api_url: ${{ secrets.F5XC_API_URL }}
+            TF_VAR_f5xc_api_p12_file_nfv: ${{ secrets.F5XC_API_P12_FILE_NFV }}
+            TF_VAR_f5xc_api_p12_file: ${{ secrets.F5XC_API_P12_FILE }}
+            TF_VAR_f5xc_api_p12_file_absolute: ${{ secrets.F5XC_API_P12_FILE_ABSOLUTE }}
+            TF_VAR_f5xc_tenant: ${{ secrets.F5XC_TENANT }}
+            TF_VAR_f5xc_api_token: ${{ secrets.F5XC_API_TOKEN }}
+            TF_VAR_f5xc_api_credential_password: ${{ secrets.F5XC_API_CREDENTIAL_PASSWORD }}
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            TF_VAR_ssh_private_key_file: ${{ secrets.SSH_PRIVATE_KEY_FILE }}
+            TF_VAR_ssh_private_key_file_absolute: ${{ secrets.SSH_PRIVATE_KEY_FILE_ABSOLUTE }}
+            TF_VAR_ssh_public_key_file: ${{ secrets.SSH_PUBLIC_KEY_FILE }}
+            TF_VAR_ssh_public_key_file_absolute: ${{ secrets.SSH_PUBLIC_KEY_FILE_ABSOLUTE }}
+            TF_VAR_hashicorp_vault_token: ${{ secrets.HASHICORP_VAULT_TOKEN }}
+            TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          cd ${{ github.workspace }}/vault
+          terraform apply -auto-approve -no-color
+        continue-on-error: false
+      - name: Terraform Apply CE
+        id: apply
+        env:
+            GH_PAT: ${{ secrets.GH_PAT }}
+            TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_app_terraform_io }}
+            VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
+            TF_VAR_f5xc_api_url: ${{ secrets.F5XC_API_URL }}
+            TF_VAR_f5xc_api_p12_file_nfv: ${{ secrets.F5XC_API_P12_FILE_NFV }}
+            TF_VAR_f5xc_api_p12_file: ${{ secrets.F5XC_API_P12_FILE }}
+            TF_VAR_f5xc_api_p12_file_absolute: ${{ secrets.F5XC_API_P12_FILE_ABSOLUTE }}
+            TF_VAR_f5xc_tenant: ${{ secrets.F5XC_TENANT }}
+            TF_VAR_f5xc_api_token: ${{ secrets.F5XC_API_TOKEN }}
+            TF_VAR_f5xc_api_credential_password: ${{ secrets.F5XC_API_CREDENTIAL_PASSWORD }}
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            TF_VAR_ssh_private_key_file: ${{ secrets.SSH_PRIVATE_KEY_FILE }}
+            TF_VAR_ssh_private_key_file_absolute: ${{ secrets.SSH_PRIVATE_KEY_FILE_ABSOLUTE }}
+            TF_VAR_ssh_public_key_file: ${{ secrets.SSH_PUBLIC_KEY_FILE }}
+            TF_VAR_ssh_public_key_file_absolute: ${{ secrets.SSH_PUBLIC_KEY_FILE_ABSOLUTE }}
+            TF_VAR_hashicorp_vault_token: ${{ secrets.HASHICORP_VAULT_TOKEN }}
+            TF_VAR_root_path: ${{ github.workspace }}
+            TFE_TOKEN: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
+        run: |
+          cd ${{ github.workspace }}/ce
+          cp main.tf.example main.tf
+          terraform apply -auto-approve -no-color
         continue-on-error: false
       - name: Cleanup environment
         id: cleanup_env
@@ -275,6 +323,7 @@ jobs:
             TF_VAR_ssh_private_key_file_absolute: ${{ secrets.SSH_PRIVATE_KEY_FILE_ABSOLUTE }}
             TF_VAR_ssh_public_key_file: ${{ secrets.SSH_PUBLIC_KEY_FILE }}
             TF_VAR_ssh_public_key_file_absolute: ${{ secrets.SSH_PUBLIC_KEY_FILE_ABSOLUTE }}
+            TF_VAR_hashicorp_vault_token: ${{ secrets.HASHICORP_VAULT_TOKEN }}
             TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             TF_VAR_root_path: ${{ github.workspace }}
@@ -357,6 +406,7 @@ jobs:
           TF_VAR_ssh_private_key_file_absolute: ${{ secrets.SSH_PRIVATE_KEY_FILE_ABSOLUTE }}
           TF_VAR_ssh_public_key_file: ${{ secrets.SSH_PUBLIC_KEY_FILE }}
           TF_VAR_ssh_public_key_file_absolute: ${{ secrets.SSH_PUBLIC_KEY_FILE_ABSOLUTE }}
+          TF_VAR_hashicorp_vault_token: ${{ secrets.HASHICORP_VAULT_TOKEN }}
           TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           TF_VAR_root_path: ${{ github.workspace }}
