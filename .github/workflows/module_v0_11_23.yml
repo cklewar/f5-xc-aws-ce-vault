@@ -40,6 +40,8 @@ jobs:
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
         run: |
+          cd ${{ github.workspace }}/ec2 
+          terraform init -upgrade
           cd ${{ github.workspace }}/vault 
           terraform init -upgrade
           cd ${{ github.workspace }}/ce
@@ -48,6 +50,8 @@ jobs:
       - name: Terraform Validate
         id: validate
         run: |
+          cd ${{ github.workspace }}/ec2
+          terraform validate -no-color
           cd ${{ github.workspace }}/vault
           terraform validate -no-color
           cd ${{ github.workspace }}/ce
@@ -88,6 +92,8 @@ jobs:
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
         run: |
+          cd ${{ github.workspace }}/ec2 
+          terraform init -upgrade
           cd ${{ github.workspace }}/vault 
           terraform init -upgrade
           cd ${{ github.workspace }}/ce
@@ -110,6 +116,8 @@ jobs:
           TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
+          cd ${{ github.workspace }}/ec2
+          terraform plan -no-color
           cd ${{ github.workspace }}/vault
           terraform plan -no-color
           cd ${{ github.workspace }}/ce
@@ -157,6 +165,8 @@ jobs:
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
         run: |
+          cd ${{ github.workspace }}/ec2 
+          terraform init -upgrade
           cd ${{ github.workspace }}/vault 
           terraform init -upgrade
           cd ${{ github.workspace }}/ce
@@ -179,6 +189,8 @@ jobs:
           TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
+          cd ${{ github.workspace }}/ec2
+          terraform apply -auto-approve -no-color
           cd ${{ github.workspace }}/vault
           terraform apply -auto-approve -no-color
           cd ${{ github.workspace }}/ce
@@ -226,6 +238,8 @@ jobs:
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
         run: |
+          cd ${{ github.workspace }}/ec2 
+          terraform init -upgrade
           cd ${{ github.workspace }}/vault 
           terraform init -upgrade
           cd ${{ github.workspace }}/ce
@@ -248,6 +262,8 @@ jobs:
             TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
+          cd ${{ github.workspace }}/ec2
+          terraform apply -auto-approve -no-color
           cd ${{ github.workspace }}/vault
           terraform apply -auto-approve -no-color
           cd ${{ github.workspace }}/ce
@@ -295,6 +311,8 @@ jobs:
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
         run: |
+          cd ${{ github.workspace }}/ec2
+          terraform init -upgrade
           cd ${{ github.workspace }}/vault 
           terraform init -upgrade
           cd ${{ github.workspace }}/ce
@@ -317,6 +335,8 @@ jobs:
           TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
+          cd ${{ github.workspace }}/ec2
+          terraform destroy -auto-approve -no-color
           cd ${{ github.workspace }}/vault
           terraform destroy -auto-approve -no-color
           cd ${{ github.workspace }}/ce
