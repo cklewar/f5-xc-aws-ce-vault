@@ -10,10 +10,7 @@ terraform {
   }
 
   required_providers {
-    vault = {
-      source  = "hashicorp/vault"
-      version = ">= 3.22.0"
-    }
+
 
     local = ">= 2.2.3"
     null  = ">= 3.1.1"
