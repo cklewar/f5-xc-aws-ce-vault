@@ -39,7 +39,12 @@ jobs:
         id: init
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
-        run: terraform init -upgrade
+        run: |
+          cd ${{ github.workspace }}/vault 
+          terraform init -upgrade
+          cd /
+          cd ${{ github.workspace }}/ce
+          terraform init -upgrade
       - name: Terraform Validate
         id: validate
         run: |
@@ -83,7 +88,12 @@ jobs:
         id: init
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
-        run:  terraform init -upgrade
+        run: |
+          cd ${{ github.workspace }}/vault 
+          terraform init -upgrade
+          cd /
+          cd ${{ github.workspace }}/ce
+          terraform init -upgrade
       - name: Terraform Plan
         id: plan
         env:
@@ -146,7 +156,12 @@ jobs:
         id: init
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
-        run:  terraform init -upgrade
+        run: |
+          cd ${{ github.workspace }}/vault 
+          terraform init -upgrade
+          cd /
+          cd ${{ github.workspace }}/ce
+          terraform init -upgrade
       - name: Terraform Apply
         id: apply
         env:
@@ -209,7 +224,12 @@ jobs:
         id: init
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
-        run: terraform init -upgrade
+        run: |
+          cd ${{ github.workspace }}/vault 
+          terraform init -upgrade
+          cd /
+          cd ${{ github.workspace }}/ce
+          terraform init -upgrade
       - name: Terraform Apply
         id: reapply
         env:
@@ -272,7 +292,12 @@ jobs:
         id: init
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
-        run:  terraform init -upgrade
+        run: |
+          cd ${{ github.workspace }}/vault 
+          terraform init -upgrade
+          cd /
+          cd ${{ github.workspace }}/ce
+          terraform init -upgrade
       - name: Terraform Destroy
         id: destroy
         env:
