@@ -5,7 +5,7 @@ terraform {
     hostname     = "app.terraform.io"
 
     workspaces {
-      name = "f5-xc-aws-ce-vault-module"
+      name = "f5-xc-aws-vault-ce-module"
     }
   }
 
