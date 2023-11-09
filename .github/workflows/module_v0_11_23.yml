@@ -47,6 +47,7 @@ jobs:
       - name: Terraform Validate
         id: validate
         run: |
+          ls -la
           cd vault
           terraform validate -no-color
           cd ..
