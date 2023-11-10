@@ -1,10 +1,8 @@
 name: F5XC AWS Cloud CE Vault module v0.11.23
 on: workflow_dispatch
 jobs:
-
   aws-cloud-ce-vault-module-apply:
     runs-on: ubuntu-latest
-    needs: [aws-cloud-ce-vault-module-plan]
     steps:
       - run: echo "The job was automatically triggered by a ${{github.event_name}} event."
       - run: echo "This job is now running on a ${{ runner.os }} server hosted by GitHub."
@@ -135,7 +133,7 @@ jobs:
       - run: echo "This job's status is ${{ job.status }}."
   aws-cloud-ce-vault-module-destroy:
     runs-on: ubuntu-latest
-    needs: [aws-cloud-ce-vault-module-reapply]
+    needs: [aws-cloud-ce-vault-module-apply]
     steps:
       - run: echo "The job was automatically triggered by a ${{github.event_name}} event."
       - run: echo "This job is now running on a ${{ runner.os }} server hosted by GitHub."
