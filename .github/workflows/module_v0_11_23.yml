@@ -225,6 +225,7 @@ jobs:
             TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
+          echo ${{ env.VAULT_ADDR }}
           cd ${{ github.workspace }}/vault
           terraform apply -auto-approve -no-color
         continue-on-error: false
