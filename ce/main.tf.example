@@ -99,7 +99,7 @@ data "tfe_outputs" "vault" {
 data "vault_aws_access_credentials" "creds" {
   backend  = data.tfe_outputs.vault.values.backend
   role     = data.tfe_outputs.vault.values.role
-  provider = "vault.default"
+  provider = vault.default
 }
 
 module "f5xc_aws_cloud_ce_single_node_single_nic_new_vpc_new_subnet" {
