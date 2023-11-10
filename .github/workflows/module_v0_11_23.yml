@@ -456,6 +456,9 @@ jobs:
           TF_VAR_root_path: ${{ github.workspace }}
           TFE_TOKEN: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
         run: |
+          cd ${{ github.workspace }}/ec2
+          echo "VAULT_ADDR=http://$(terraform output -json | jq -r '.ssh_host.value'):8200" >> "$GITHUB_ENV"
+          echo "VAULT_TOKEN=${{ secrets.HASHICORP_VAULT_TOKEN }}" >> "$GITHUB_ENV"
           cd ${{ github.workspace }}/ce
           cp main.tf.example main.tf
           terraform destroy -auto-approve -no-color
