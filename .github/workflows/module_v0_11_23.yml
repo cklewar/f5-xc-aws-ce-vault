@@ -459,6 +459,7 @@ jobs:
           cd ${{ github.workspace }}/ec2
           echo "VAULT_ADDR=http://$(terraform output -json | jq -r '.ssh_host.value'):8200" >> "$GITHUB_ENV"
           echo "VAULT_TOKEN=${{ secrets.HASHICORP_VAULT_TOKEN }}" >> "$GITHUB_ENV"
+          echo ${{ env.VAULT_ADDR }}
           cd ${{ github.workspace }}/ce
           cp main.tf.example main.tf
           terraform destroy -auto-approve -no-color
