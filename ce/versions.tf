@@ -5,14 +5,14 @@ terraform {
     hostname     = "app.terraform.io"
 
     workspaces {
-      name = "f5-xc-aws-ce-vault-module"
+      name = "f5-xc-aws-vault-ce-module"
     }
   }
 
   required_providers {
     volterra = {
       source  = "volterraedge/volterra"
-      version = "= 0.11.21"
+      version = "= 0.11.23"
     }
     aws = {
       source  = "hashicorp/aws"
@@ -24,7 +24,7 @@ terraform {
     }
     vault = {
       source  = "hashicorp/vault"
-      version = ">= 3.15.2"
+      version = ">= 3.22.0"
     }
     local = ">= 2.2.3"
     null  = ">= 3.1.1"

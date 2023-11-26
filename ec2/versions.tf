@@ -5,16 +5,11 @@ terraform {
     hostname     = "app.terraform.io"
 
     workspaces {
-      name = "f5-xc-aws-vault-server-module"
+      name = "f5-xc-aws-ce-vault-module" # "f5-xc-aws-vault-ec2-module"
     }
   }
 
   required_providers {
-    vault = {
-      source  = "hashicorp/vault"
-      version = ">= 3.22.0"
-    }
-
     local = ">= 2.2.3"
     null  = ">= 3.1.1"
   }

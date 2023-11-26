@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+until ping -c10 -W1 1.1.1.1; do echo "waiting for internet connectivity ..." && sleep 5; done
+
+sudo apt-get update
+sleep 5
+sudo apt-get -y install --no-install-recommends build-essential libssl-dev git curl net-tools tcpdump traceroute iputils-ping jq wget unzip ca-certificates gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo docker run --cap-add=IPC_LOCK -d -it -p 8200:8200 -e 'VAULT_DEV_ROOT_TOKEN_ID=f5_xc_vault_test' -e 'VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200' hashicorp/vault

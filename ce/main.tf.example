@@ -10,19 +10,9 @@ variable "project_suffix" {
   default     = "01"
 }
 
-
 variable "name_operator" {
   type    = string
   default = "dynamic-aws-creds-operator"
-}
-
-variable "region" {
-  type    = string
-  default = "us-east-1"
-}
-
-variable "f5xc_api_p12_file" {
-  type = string
 }
 
 variable "f5xc_api_url" {
@@ -57,7 +47,11 @@ variable "owner" {
   default = "c.klewar@f5.com"
 }
 
-variable "ssh_public_key_file" {
+variable "root_path" {
+  type = string
+}
+
+variable "ssh_public_key_file_absolute" {
   type = string
 }
 
@@ -66,9 +60,8 @@ variable "name" {
   default = "dynamic-aws-creds-operator"
 }
 
-variable "ttl" {
-  type    = string
-  default = "1"
+variable "f5xc_api_p12_file_absolute" {
+  type = string
 }
 
 locals {
@@ -80,20 +73,11 @@ locals {
   }
 }
 
-data "tfe_outputs" "vault" {
-  organization = "cklewar"
-  workspace    = "aws-vault-module"
-}
-
-data "vault_aws_access_credentials" "creds" {
-  backend = data.tfe_outputs.vault.values.backend
-  role    = data.tfe_outputs.vault.values.role
-}
-
 provider "volterra" {
-  api_p12_file = var.f5xc_api_p12_file
+  api_p12_file = format("%s/%s", var.root_path, var.f5xc_api_p12_file_absolute)
   url          = var.f5xc_api_url
   alias        = "default"
+  timeout      = "30s"
 }
 
 provider "aws" {
@@ -101,6 +85,21 @@ provider "aws" {
   region     = var.f5xc_aws_region
   access_key = data.vault_aws_access_credentials.creds.access_key
   secret_key = data.vault_aws_access_credentials.creds.secret_key
+}
+
+provider "vault" {
+  alias = "default"
+}
+
+data "tfe_outputs" "vault" {
+  organization = "cklewar"
+  workspace    = "aws-vault-module"
+}
+
+data "vault_aws_access_credentials" "creds" {
+  backend  = data.tfe_outputs.vault.values.backend
+  role     = data.tfe_outputs.vault.values.role
+  provider = vault.default
 }
 
 module "f5xc_aws_cloud_ce_single_node_single_nic_new_vpc_new_subnet" {
@@ -128,7 +127,7 @@ module "f5xc_aws_cloud_ce_single_node_single_nic_new_vpc_new_subnet" {
   aws_vpc_cidr_block                   = "192.168.0.0/20"
   aws_security_group_rules_slo_egress  = []
   aws_security_group_rules_slo_ingress = []
-  ssh_public_key                       = file(var.ssh_public_key_file)
+  ssh_public_key                       = file(format("%s/%s", var.root_path, var.ssh_public_key_file_absolute))
   providers                            = {
     aws      = aws.default
     volterra = volterra.default
